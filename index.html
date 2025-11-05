@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Career Compass</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #020617; /* bg-slate-950 */
+        background-image: 
+          radial-gradient(circle at 10% 20%, rgba(34, 211, 238, 0.15), transparent 35%),
+          radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.15), transparent 35%);
+      }
+      /* Custom scrollbar for a techy feel */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1e293b; /* bg-slate-800 */
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #334155; /* bg-slate-700 */
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #475569; /* bg-slate-600 */
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-in-out;
+      }
+       .animate-stagger-in > * {
+        --stagger-delay: 150ms;
+        animation: fadeIn 0.5s ease-in-out both;
+        animation-delay: calc(var(--stagger-index) * var(--stagger-delay));
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+       @keyframes spin-slow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .animate-spin-slow {
+        animation: spin-slow 3s linear infinite;
+      }
+       @keyframes border-glow {
+        0% { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 0 5px rgba(34, 211, 238, 0.3); }
+        50% { border-color: rgba(59, 130, 246, 0.5); box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+        100% { border-color: rgba(34, 211, 238, 0.5); box-shadow: 0 0 5px rgba(34, 211, 238, 0.3); }
+      }
+      .card-style {
+        background: rgba(15, 23, 42, 0.5); /* bg-slate-900/50 */
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(51, 65, 85, 0.7); /* border-slate-700/70 */
+        border-radius: 1.25rem; /* rounded-2xl */
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+      .card-style:hover {
+         border-color: rgba(34, 211, 238, 0.4);
+      }
+       .textarea-glow {
+        transition: border-color 0.3s, box-shadow 0.3s;
+       }
+      .textarea-glow:focus {
+        border-color: rgba(34, 211, 238, 1);
+        box-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
+      }
+      .drag-active-glow {
+        animation: border-glow 2.5s infinite;
+      }
+      .text-glow {
+         text-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.28.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "pdfjs-dist": "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.min.mjs"
+  }
+}
+</script>
+</head>
+  <body class="text-slate-300">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
