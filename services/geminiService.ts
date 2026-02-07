@@ -102,13 +102,46 @@ export const getCareerAnalysis = async (resumeText: string, jdText?: string): Pr
     };
 
     const response = await ai.models.generateContent({ model, contents, config });
-    const jsonString = response.text.trim();
-    
-    try {
-        const parsedJson = JSON.parse(jsonString);
+    const responseText = response.text
+        ?? response.candidates?.[0]?.content?.parts?.map((part) => ("text" in part ? part.text : "")).join("")
+        ?? "";
+
+    const tryParseJson = (input: string) => {
+        const trimmed = input.trim();
+        if (!trimmed) {
+            return null;
+        }
+
+        try {
+            return JSON.parse(trimmed);
+        } catch {
+            return null;
+        }
+    };
+
+    const extractJsonFromText = (input: string) => {
+        const fenceMatch = input.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+        if (fenceMatch?.[1]) {
+            return fenceMatch[1].trim();
+        }
+
+        const firstBrace = input.indexOf("{");
+        const lastBrace = input.lastIndexOf("}");
+        if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+            return input.slice(firstBrace, lastBrace + 1).trim();
+        }
+
+        return "";
+    };
+
+    const parsedJson =
+        tryParseJson(responseText)
+        ?? tryParseJson(extractJsonFromText(responseText));
+
+    if (parsedJson) {
         return parsedJson as AnalysisResult;
-    } catch (e) {
-        console.error("Failed to parse Gemini response:", jsonString);
-        throw new Error("The AI response was not in the expected format.");
     }
+
+    console.error("Failed to parse Gemini response:", responseText);
+    throw new Error("The AI response was not in the expected format.");
 };
