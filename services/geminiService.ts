@@ -1,7 +1,13 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import type { AnalysisResult } from '../types';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const getClient = () => {
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    if (!apiKey) {
+        throw new Error("Missing Gemini API key. Set VITE_GEMINI_API_KEY in your environment.");
+    }
+    return new GoogleGenAI({ apiKey });
+};
 
 const resumeAnalysisSchema = {
   type: Type.OBJECT,
@@ -101,7 +107,7 @@ export const getCareerAnalysis = async (resumeText: string, jdText?: string): Pr
         systemInstruction,
     };
 
-    const response = await ai.models.generateContent({ model, contents, config });
+    const response = await getClient().models.generateContent({ model, contents, config });
     const jsonString = response.text.trim();
     
     try {

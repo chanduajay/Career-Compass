@@ -30,7 +30,12 @@ export default function App() {
       setAnalysisResult(result);
     } catch (e) {
       console.error(e);
-      setError('An error occurred while analyzing. The AI may have returned an unexpected response. Please try again.');
+      const message = e instanceof Error ? e.message : '';
+      if (message.includes('Missing Gemini API key')) {
+        setError('The Gemini API key is missing. Please configure VITE_GEMINI_API_KEY and try again.');
+      } else {
+        setError('An error occurred while analyzing. The AI may have returned an unexpected response. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
